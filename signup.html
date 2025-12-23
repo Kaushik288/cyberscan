@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>CyberScan – Sign up</title>
+  <link rel="stylesheet" href="style.css" />
+  <style>
+    .signup-main {
+      min-height: calc(100vh - 56px);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 24px;
+    }
+
+    .signup-card {
+      background: #020617;
+      border-radius: 18px;
+      border: 1px solid #1f2937;
+      padding: 28px;
+      width: 100%;
+      max-width: 400px;
+      box-shadow: 0 20px 45px rgba(0, 0, 0, 0.7);
+    }
+
+    .signup-title {
+      font-size: 1.4rem;
+      margin-bottom: 6px;
+    }
+
+    .signup-subtitle {
+      font-size: 0.9rem;
+      color: #9ca3af;
+      margin-bottom: 18px;
+    }
+
+    .signup-label {
+      display: block;
+      font-size: 0.8rem;
+      color: #9ca3af;
+      margin-bottom: 10px;
+    }
+
+    .signup-label input {
+      width: 100%;
+      margin-top: 4px;
+      padding: 8px 10px;
+      border-radius: 8px;
+      border: 1px solid #1f2937;
+      background: #020617;
+      color: #e5e7eb;
+      font-size: 0.85rem;
+    }
+
+    .signup-label input:focus {
+      outline: none;
+      border-color: #38bdf8;
+    }
+
+    .signup-btn {
+      width: 100%;
+      margin-top: 10px;
+      padding: 9px 0;
+      border-radius: 999px;
+      border: none;
+      background: #2563eb;
+      color: white;
+      font-size: 0.9rem;
+      cursor: pointer;
+    }
+
+    .signup-footer {
+      margin-top: 12px;
+      font-size: 0.8rem;
+      color: #9ca3af;
+      text-align: center;
+    }
+
+    .signup-link {
+      background: none;
+      border: none;
+      color: #38bdf8;
+      cursor: pointer;
+      font-size: 0.8rem;
+    }
+
+    .signup-note {
+      margin-top: 8px;
+      font-size: 0.75rem;
+      color: #6b7280;
+      text-align: center;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="app">
+    <header class="topbar">
+      <div class="logo-mark">⌁</div>
+      <div class="logo-text">CYBERSCAN</div>
+      <div style="flex:1"></div>
+    </header>
+
+    <main class="signup-main">
+      <div class="signup-card">
+        <h1 class="signup-title">Create account</h1>
+        <p class="signup-subtitle">
+          Sign up to access the CyberScan demo platform.
+        </p>
+
+        <form id="signupForm">
+          <label class="signup-label">
+            Full name
+            <input type="text" required />
+          </label>
+
+          <label class="signup-label">
+            Email
+            <input type="email" required />
+          </label>
+
+          <label class="signup-label">
+            Password
+            <input type="password" required />
+          </label>
+
+          <button type="submit" class="signup-btn">Sign up</button>
+
+          <p class="signup-footer">
+            Already have an account?
+            <button type="button" class="signup-link" id="loginLink">
+              Log in
+            </button>
+          </p>
+
+          <p class="signup-note">
+            Demo only – no real account is created 🙂
+          </p>
+        </form>
+      </div>
+    </main>
+  </div>
+
+  <script>
+  const signupForm = document.getElementById("signupForm");
+  const loginLink = document.getElementById("loginLink");
+
+  signupForm.addEventListener("submit", (e) => {
+    e.preventDefault();
+
+    const name = signupForm.querySelector('input[type="text"]').value;
+    const email = signupForm.querySelector('input[type="email"]').value;
+    const password = signupForm.querySelector('input[type="password"]').value;
+
+    const user = {
+      name,
+      email,
+      password
+    };
+
+    localStorage.setItem("cyberscanUser", JSON.stringify(user));
+
+    alert("Account created successfully ✅");
+    window.location.href = "login.html";
+  });
+
+  loginLink.addEventListener("click", () => {
+    window.location.href = "login.html";
+  });
+</script>
+
+</body>
+</html>

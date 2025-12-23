@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>CyberScan – File Scanner</title>
+  <link rel="stylesheet" href="style.css" />
+
+  <style>
+    /* 🔥 Ensure navbar always clickable */
+    .topbar {
+      position: relative;
+      z-index: 1000;
+    }
+
+    /* Button-style links */
+    .top-btn {
+      padding: 8px 16px;
+      border-radius: 999px;
+      font-size: 0.85rem;
+      text-decoration: none;
+      cursor: pointer;
+      border: none;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .top-btn.ghost {
+      background: transparent;
+      color: #e5e7eb;
+      border: 1px solid #334155;
+    }
+
+    .top-btn.solid {
+      background: #2563eb;
+      color: white;
+      margin-left: 8px;
+    }
+
+    .top-btn:hover {
+      opacity: 0.9;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="app">
+
+    <!-- ===== TOP BAR ===== -->
+    <header class="topbar">
+      <div class="logo">
+        <div class="logo-mark">
+          <img src="./assets/cyberscan-logo.png" alt="CyberScan Logo" />
+        </div>
+        <span class="logo-text">CYBERSCAN</span>
+      </div>
+
+      <input
+        class="search-bar"
+        placeholder="URL, IP address, domain or file hash"
+      />
+
+      <!-- ✅ FIXED AUTH BUTTONS -->
+      <a href="login.html" class="top-btn ghost">Log in</a>
+      <a href="signup.html" class="top-btn solid">Sign up</a>
+    </header>
+
+    <!-- ===== MAIN CARD ===== -->
+    <main class="main-card">
+      <h1 class="title">Analyse suspicious files</h1>
+      <p class="subtitle">
+        Upload a file to simulate a malware scan for learning & testing purposes.
+      </p>
+
+      <!-- ===== TABS ===== -->
+      <div class="tabs">
+        <button class="tab active" id="fileTab">FILE</button>
+        <button class="tab" id="urlTab">URL</button>
+        <button class="tab" id="searchTab">SEARCH</button>
+      </div>
+
+      <!-- ===== FILE UPLOAD ===== -->
+      <div class="upload-box" id="uploadBox">
+        <div class="upload-icon">📄</div>
+        <p class="upload-text">Drop a file here or</p>
+        <button class="choose-btn" id="chooseFileBtn">Choose file</button>
+        <input type="file" id="fileInput" hidden />
+        <p id="fileName" style="margin-top:10px; font-size:0.8rem; color:#9ca3af;"></p>
+      </div>
+
+      <!-- ===== URL SCAN ===== -->
+      <div id="urlBox" style="display:none; text-align:center; margin-top:20px;">
+        <input
+          id="urlInput"
+          type="text"
+          placeholder="Enter a URL to scan"
+          style="
+            width:80%;
+            padding:10px 14px;
+            border-radius:10px;
+            border:1px solid #1f2937;
+            background:#0f172a;
+            color:white;
+          "
+        />
+        <br />
+        <button
+          id="scanUrlBtn"
+          style="
+            margin-top:12px;
+            padding:8px 18px;
+            border:none;
+            background:#3b82f6;
+            color:white;
+            border-radius:999px;
+            cursor:pointer;
+          "
+        >
+          Scan URL
+        </button>
+      </div>
+
+      <!-- ===== ACTION ===== -->
+      <div style="text-align:center; margin-top:12px;">
+        <button id="scanBtn" class="choose-btn" disabled>Scan file</button>
+        <p id="statusText" style="margin-top:8px; font-size:0.8rem; color:#9ca3af;"></p>
+      </div>
+
+      <!-- ===== RESULT ===== -->
+      <div
+        id="resultBox"
+        style="
+          margin-top:18px;
+          padding:16px;
+          border-radius:12px;
+          border:1px solid #1f2937;
+          background:#020617;
+          display:none;
+        "
+      >
+        <h3>Scan result</h3>
+        <pre id="resultContent"></pre>
+      </div>
+
+      <p class="disclaimer">
+        This is a demo project for cybersecurity learning. Do not upload sensitive data.
+      </p>
+    </main>
+  </div>
+
+  <!-- ===== SCRIPT ===== -->
+  <script>
+    const chooseFileBtn = document.getElementById("chooseFileBtn");
+    const fileInput = document.getElementById("fileInput");
+    const fileNameEl = document.getElementById("fileName");
+    const scanBtn = document.getElementById("scanBtn");
+    const statusText = document.getElementById("statusText");
+    const resultBox = document.getElementById("resultBox");
+    const resultContent = document.getElementById("resultContent");
+
+    const fileTab = document.getElementById("fileTab");
+    const urlTab = document.getElementById("urlTab");
+    const searchTab = document.getElementById("searchTab");
+
+    const uploadBox = document.getElementById("uploadBox");
+    const urlBox = document.getElementById("urlBox");
+
+    let selectedFile = null;
+
+    chooseFileBtn.onclick = () => fileInput.click();
+
+    fileInput.onchange = () => {
+      selectedFile = fileInput.files[0];
+      fileNameEl.textContent = `Selected: ${selectedFile.name}`;
+      scanBtn.disabled = false;
+    };
+
+    scanBtn.onclick = async () => {
+      statusText.textContent = "Scanning file...";
+      await new Promise(r => setTimeout(r, 1500));
+      resultBox.style.display = "block";
+      resultContent.textContent = JSON.stringify(
+        { harmless: 12, malicious: 0, suspicious: 1 },
+        null,
+        2
+      );
+      statusText.textContent = "Scan complete ✅";
+    };
+
+    fileTab.onclick = () => {
+      fileTab.classList.add("active");
+      urlTab.classList.remove("active");
+      uploadBox.style.display = "block";
+      urlBox.style.display = "none";
+      scanBtn.style.display = "inline-block";
+    };
+
+    urlTab.onclick = () => {
+      urlTab.classList.add("active");
+      fileTab.classList.remove("active");
+      uploadBox.style.display = "none";
+      scanBtn.style.display = "none";
+      urlBox.style.display = "block";
+    };
+
+    searchTab.onclick = () => alert("Coming soon 🚧");
+  </script>
+</body>
+</html>
